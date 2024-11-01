@@ -1,0 +1,19 @@
+@mixin line-clamp($max: 1) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $max;
+  overflow: hidden;
+}
+
+@mixin fluid-text($min: 16, $max: 48) {
+  font-size: clamp(#{$min}px, #{$max / 1920 * 100}vw, #{$max}px);
+}
+
+.box-1 {
+  @include line-clamp;
+  background-color: lightsalmon;
+}
+
+.box-3 {
+  @include fluid-text(16, 32);
+}
