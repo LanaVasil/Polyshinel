@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Connection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Events\QueryExecuted;
+
 use Vite;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
@@ -35,6 +40,19 @@ class AppServiceProvider extends ServiceProvider
         $view->with('balance', 123456);
       });
 
+      // Помічники
+
+      // тільки для локальною розробки
+      // видає помилку на моєму admin/devices - тому закрила
+      // Model::preventLazyLoading(!app()->isProduction());
+
+      // збереження полів вказаних $fillable, якщо відсутній, то буде Exception  
+      Model::preventsSilentlyDiscardingAttributes (!app()->isProduction());
+
+      // якщо запит виконується більше 500, то повідомити про це
+      DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
+        // Notify development team...
+      });
 
     }
 }
